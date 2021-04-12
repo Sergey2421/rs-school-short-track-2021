@@ -19,9 +19,26 @@
  *   '.ru.yandex.music': 1,
  * }
  *
+ * [
+ * [ru, ya, code]
+ * [ru, ya, music]
+ * [ru]
+ * ]
+ *
  */
-function getDNSStats(/* domains */) {
-  throw new Error('Not implemented');
+function getDNSStats(domains) {
+  const obj = {};
+  const arr = domains.map((elem) => elem.split('.').reverse());
+  arr.forEach((elem) => {
+    elem.reduce((acc, elem2) => {
+      // eslint-disable-next-line no-param-reassign
+      acc += `.${elem2}`;
+      if (acc in obj) obj[acc]++;
+      else obj[acc] = 1;
+      return acc;
+    }, '');
+  });
+  return obj;
 }
 
 module.exports = getDNSStats;
